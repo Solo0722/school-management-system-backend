@@ -36,6 +36,23 @@ export const getSingleTeacher = async (req, res) => {
   }
 };
 
+export const updateTeacher = async (req, res) => {
+  const { id } = req.params;
+  const teacher = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send("No student with that ID");
+
+  try {
+    const updatedTeacher = await TeacherInfo.findByIdAndUpdate(id, teacher, {
+      new: true,
+    });
+    res.status(200).json(updatedTeacher);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 export const deleteTeacher = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id))
